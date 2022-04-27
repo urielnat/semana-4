@@ -19,7 +19,7 @@ describe('Pruebas de unidad servicio explorer service',()=>{
     test('2.- prueba funcion getAmountOfExplorersByMission',()=>{
         cantidad= ExplorerService.getAmountOfExplorersByMission(explorers, "node");
         expect(cantidad).not.toBeUndefined()
-        expect(cantidad).toBe(100)
+        expect(cantidad).toBe(10)
 
     }),
     test('3.- prueba funcion getExplorersUsernamesByMission',()=>{
