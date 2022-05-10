@@ -17,6 +17,8 @@
     "jest": "^28.0.1"
   },
   "dependencies": {
+    "eslint": "^8.14.0",
+    "jest": "^28.0.1",
     "express": "^4.18.0",
     "node-telegram-bot-api": "^0.57.0"
   }

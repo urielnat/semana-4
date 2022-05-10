@@ -1,23 +1,38 @@
-const reader = require("./lib/utils/Reader");
-const ExplorerService = require("./lib/services/ExplorerService");
-const FizzbuzzService = require("./lib/services/FizzbuzzService");
+const ExplorerController = require("./lib/controllers/ExplorerController");
+const express = require("express");
+const app = express();
+app.use(express.json());
+const port = 3000;
 
-let explorers =reader.readJsonFile("./explorers.json");
+app.get("/", (request, response) => {
+    response.json({message: "FizzBuzz Api welcome!"});
+});
 
-// Aplicación del ExplorerService sobre la lista de explorers
-ExplorerService.filterByMission(explorers, "node");
-ExplorerService.getAmountOfExplorersByMission(explorers, "node");
-ExplorerService.getExplorersUsernamesByMission(explorers, "node");
+app.listen(port, () => {
+    console.log(`FizzBuzz API in localhost:${port}`);
+});
 
 
-const explorer1 = {name: "Explorer1", score: 1};
-FizzbuzzService.applyValidationInExplorer(explorer1); // {name: "Explorer1", score: 1, trick: 1} 
+app.get("/v1/explorers/:mission", (request, response) => {
+    const query = request.params.mission;
+    const explorersInMission = ExplorerController.getExplorersByMission(query);
+    response.json(explorersInMission);
+});
 
-const explorer3 = {name: "Explorer3", score: 3};
-FizzbuzzService.applyValidationInExplorer(explorer3); // {name: "Explorer3", score: 3, trick: "FIZZ"}
+app.get("/v1/explorers/amount/:mission", (request, response) => {
+    const query = request.params.mission;
+    const explorersAmountInMission = ExplorerController.getExplorersAmonutByMission(query);
+    response.json({mission: request.params.mission, quantity: explorersAmountInMission});
+});
 
-const explorer5 = {name: "Explorer5", score: 5};
-FizzbuzzService.applyValidationInExplorer(explorer5); // {name: "Explorer5", score: 5, trick: "BUZZ"}
+app.get("/v1/explorers/usernames/:mission", (request, response) => {
+    const query = request.params.mission;
+    const explorersUsernamesInMission = ExplorerController.getExplorersUsernamesByMission(query);
+    response.json({mission: request.params.mission,explorers: explorersUsernamesInMission});
+});
 
-const explorer15 = {name: "Explorer15", score: 15};
-FizzbuzzService.applyValidationInExplorer(explorer15); // {name: "Explorer15", score: 15, trick: "FIZZBUZZ"}
+app.get("/v1/fizzbuzz/:number", (request, response) => {
+    const query = request.params.number;
+    const trick = ExplorerController.getTrick(query);
+    response.json({score: query, trick: trick});
+});
